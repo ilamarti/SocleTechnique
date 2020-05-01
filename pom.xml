@@ -12,8 +12,11 @@
 	<modules>
 		<module>SocleTechnique-web</module>
 		<module>SocleTechnique-domain</module>
-    <module>SocleTechnique-frontend</module>
-  </modules>
+        <module>SocleTechnique-frontend</module>
+		<module>SocleTechnique-persistence</module>
+		<module>SocleTechnique-service</module>
+	</modules>
+
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
