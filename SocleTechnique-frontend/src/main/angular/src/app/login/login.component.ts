@@ -20,11 +20,13 @@ export class LoginComponent implements OnInit {
     private authenticationService: AuthenticationService, private tokenStorageService: TokenStorageService) { }
 
   ngOnInit() {
-  	
+    if(this.authenticationService.isUserLoggedIn()) {
+      this.router.navigate([''])
+    }
+
   }
   
    login() {
-     alert(this.username)
   	this.authenticationService.authenticate(this.username, this.password).subscribe(
       data => {      
         this.tokenStorageService.saveToken(data.accessToken);
