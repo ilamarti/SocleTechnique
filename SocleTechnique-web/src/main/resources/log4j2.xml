@@ -1,28 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="DEBUG">
+<!-- <Configuration status="DEBUG"> -->
+<Configuration status="WARN" monitorInterval="30">
+	<Properties>
+		<Property name="LOG_PATTERN">
+			%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${hostName}
+			--- [%15.15t] %-40.40c{1.} : %m%n%ex
+		</Property>
+		<Property name="APP_LOG_ROOT">c:/logs</Property>
+		<Property name="APP_NAME">Socle_technique</Property>
+	</Properties>
+
 	<Appenders>
-		<Console name="LogToConsole" target="SYSTEM_OUT">
-			<PatternLayout
-				pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+		<Console name="ConsoleAppender" target="SYSTEM_OUT"
+			follow="true">
+			<PatternLayout pattern="${LOG_PATTERN}" />
 		</Console>
-		<File name="LogToFile" fileName="logs/app.log">
+
+		<!-- Rolling File Appender -->
+		<RollingFile name="FileAppender"
+			fileName="${APP_LOG_ROOT}/${APP_NAME}/file-log.log"
+			filePattern="${APP_NAME}/file-log-%d{yyyy-MM-dd}-%i.log">
 			<PatternLayout>
-				<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+				<Pattern>${LOG_PATTERN}</Pattern>
 			</PatternLayout>
-		</File>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" />
+				<SizeBasedTriggeringPolicy size="10MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+		
+		<!-- SMTP Appender
+        <SMTP name="MailAppender"
+              subject="Log4 [PROD]"
+              to="youremail@example.com"
+              from="company-example@example.com"
+              smtpHost="yourSMTPHost"
+              smtpPort="587"
+              smtpUsername="yourSMTPUsername"
+              smtpPassword="yourSMTPPassword"
+              bufferSize="1">
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+        </SMTP>
+         -->
 	</Appenders>
+
 	<Loggers>
-		<Logger name="com.mkyong" level="debug" additivity="false">
-			<AppenderRef ref="LogToFile" />
-			<AppenderRef ref="LogToConsole" />
-		</Logger>
-		<Logger name="org.springframework.boot" level="error"
+		<AsyncLogger name="ma.nestideas" level="debug"
 			additivity="false">
-			<AppenderRef ref="LogToConsole" />
-		</Logger>
-		<Root level="error">
-			<AppenderRef ref="LogToFile" />
-			<AppenderRef ref="LogToConsole" />
+			<AppenderRef ref="ConsoleAppender" />
+			<AppenderRef ref="FileAppender" />
+		</AsyncLogger>
+
+		<AsyncLogger name="ma.nestideas" level="error"
+			additivity="false">
+			<AppenderRef ref="ConsoleAppender" />
+			<AppenderRef ref="FileAppender" />
+		</AsyncLogger>
+
+		<Root level="info">
+			<AppenderRef ref="ConsoleAppender" />
+			<AppenderRef ref="FileAppender" />
 		</Root>
 	</Loggers>
+
 </Configuration>
