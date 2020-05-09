@@ -18,7 +18,7 @@
 		<!-- Rolling File Appender -->
 		<RollingFile name="FileAppender"
 			fileName="${APP_LOG_ROOT}/${APP_NAME}/file-log.log"
-			filePattern="${APP_NAME}/file-log-%d{yyyy-MM-dd}-%i.log">
+			filePattern="${APP_LOG_ROOT}/${APP_NAME}/file-log-%d{yyyy-MM-dd}-%i.log">
 			<PatternLayout>
 				<Pattern>${LOG_PATTERN}</Pattern>
 			</PatternLayout>
